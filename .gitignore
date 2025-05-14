@@ -69,3 +69,6 @@ ProjectSettings/UserSettings/
 
 # UserSettings 폴더 제외
 UserSettings/
+
+# 추가적인 무시 규칙 (현재 보이는 파일들)
+Library/Bee/
