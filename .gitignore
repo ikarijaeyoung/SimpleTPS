@@ -1,11 +1,11 @@
 # Unity generated folders to ignore
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-[Mm]emoryCaptures/
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+MemoryCaptures/
 UserSettings/
 .vscode/
 
@@ -30,10 +30,42 @@ UserSettings/
 .DS_Store
 Thumbs.db
 
+# Visual Studio generated files
 .vs/
 *.vsidx
 DocumentLayout.backup.json
+
+# Unity asset meta files - keep these!
 *.meta
-!Assets/
-!Packages/
-!ProjectSettings/
+!Assets/**/*.meta
+!Packages/**/*.meta
+!ProjectSettings/**/*.meta
+
+# But ignore Library and Temp meta files (if any)
+Library/**/*.meta
+Temp/**/*.meta
+
+# Ignore Package Cache and other Library subfolders that can be regenerated
+Library/PackageCache/
+Library/ScriptAssemblies/
+Library/SourceAssetDB/
+Library/ArtifactDB/
+
+# Ignore other temporary files
+ilpp.pid
+*.log
+*.temp
+
+# Packages 폴더 내용 제외 (manifest 및 lock 파일은 필요에 따라 남길 수 있음)
+/Packages/*
+!/Packages/manifest.json
+!/Packages/packages-lock.json
+
+# ProjectSettings 폴더의 UserSettings 제외
+ProjectSettings/UserSettings/
+
+# Visual Studio 솔루션 파일 제외
+*.sln
+
+# UserSettings 폴더 제외
+UserSettings/
