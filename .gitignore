@@ -29,3 +29,11 @@ UserSettings/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+.vs/
+*.vsidx
+DocumentLayout.backup.json
+*.meta
+!Assets/
+!Packages/
+!ProjectSettings/
