@@ -42,18 +42,24 @@ public class PlayerMovement : MonoBehaviour
         //  x축의 경우라면 제한을 걸 필요 없음
         _currentRotation.x += mouseDir.x;
 
-        Vector2 currentRotation = new()
-        {
-            x = transform.rotation.eulerAngles.x,
-            y = transform.rotation.eulerAngles.y
-        };
-
-        currentRotation.x += mouseDir.x;
-        currentRotation.y = Mathf.Clamp(
-            currentRotation.y + mouseDir.y,
+        _currentRotation.y = Mathf.Clamp(
+            _currentRotation.y + mouseDir.y,
             _minPitch,
             _maxPitch
             );
+
+        // Vector2 currentRotation = new()
+        // {
+        //     x = transform.rotation.eulerAngles.x,
+        //     y = transform.rotation.eulerAngles.y
+        // };
+
+        // currentRotation.x += mouseDir.x;
+        // currentRotation.y = Mathf.Clamp(
+        //     currentRotation.y + mouseDir.y,
+        //     _minPitch,
+        //     _maxPitch
+        //     );
 
         // 캐릭터 오브젝트의 경우에는 Y축 회전만 반영
         transform.rotation = Quaternion.Euler(0, _currentRotation.x, 0);
@@ -67,9 +73,15 @@ public class PlayerMovement : MonoBehaviour
         rotateDirVector.y = 0;
         return rotateDirVector.normalized;
     }
-    public void SetBodyRotation()
+    public void SetAvatarRotation(Vector3 direction)
     {
+        if (direction == Vector3.zero) return;
 
+        Quaternion targetRoation = Quaternion.LookRotation(direction);
+        _avatar.rotation = Quaternion.Lerp(
+            _avatar.rotation,
+            targetRoation,
+            _playerStatus.RotateSpeed * Time.deltaTime);
     }
     private Vector2 GetMouseDirection()
     {
