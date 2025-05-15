@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
     private void Init()
     {
         _bgmSource = GetComponent<AudioSource>();
-        _sfxPool = new ObjectPool(transform,_sfxPrefab,10);
+        _sfxPool = new ObjectPool(transform, _sfxPrefab, 10);
     }
 
 

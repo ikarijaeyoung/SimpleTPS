@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CinemachineImpulseChannels
   m_EditorClassIdentifier: 
   ImpulseChannels:
-  - Shoot
   - default
+  - Shoot

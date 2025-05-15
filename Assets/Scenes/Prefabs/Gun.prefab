@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3014612658197461169}
   - component: {fileID: 3103544557360899100}
+  - component: {fileID: 9053962363645271586}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ImpulseDefinition:
-    m_ImpulseChannel: 1
+    m_ImpulseChannel: 2
     m_ImpulseShape: 1
     m_CustomImpulseShape:
       serializedVersion: 2
@@ -85,3 +86,22 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: 0.3, z: 0}
+--- !u!114 &9053962363645271586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7470319551805667330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc7b61bce70854b9d88e04051bea54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _attackRange: 0
+  _shootDamage: 2
+  _shootDelay: 1
+  _shootSFX: {fileID: 8300000, guid: 09c3c08600944bb4da0b6b86301b414f, type: 3}
