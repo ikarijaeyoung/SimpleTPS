@@ -19,7 +19,7 @@ namespace DesignPatterns
             }
         }
 
-        protected void SingleToneInit()
+        protected void SingletonInit()
         {
             if (_instance != null && _instance != this)
             {
