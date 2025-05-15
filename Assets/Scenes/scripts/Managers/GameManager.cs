@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using DesignPatterns;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -12,7 +12,7 @@ public class GameManager : Singleton<GameManager>
     private void Init()
     {
         base.SingletonInit();
-        Audio = Getcomponent<AudioManager>();
+        Audio = GetComponent<AudioManager>();
     }
     
 }
