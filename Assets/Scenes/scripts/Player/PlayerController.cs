@@ -6,7 +6,7 @@ using UnityEngine.UI;
 // 작업물 병합 시 아래 내용 주석처리
 // using PlayerMovement = _Test.PlayerMovement;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
     public bool IsControlActivate { get; set; } = true;
 
