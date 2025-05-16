@@ -80,3 +80,4 @@ crashlytics-build.properties
 # Jetbrains Rider
 /.idea
 /Assets
+Imports/
