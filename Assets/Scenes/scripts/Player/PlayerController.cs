@@ -1,6 +1,6 @@
 using Cinemachine;
 using UnityEngine;
-
+using UnityEngine.UI;
 // 참조 생성용 임시 네임스페이스 참조
 // 작업물 병합 시 아래 내용 주석처리
 // using PlayerMovement = _Test.PlayerMovement;
@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode _shootKey = KeyCode.Mouse0;
 
     private Animator _animator;
+
+    [SerializeField] private Animator _aimAnimator;
+    private Image _aimImage;
 
     private void Awake()
     {
@@ -47,6 +50,7 @@ public class PlayerController : MonoBehaviour
         _movement = GetComponent<PlayerMovement>();
         // _mainCamera = Camera.main.gameObject;
         _animator = GetComponent<Animator>();
+        _aimImage = _aimAnimator.GetComponent<Image>();
     }
     private void HandlePlayerControl()
     {
@@ -127,7 +131,12 @@ public class PlayerController : MonoBehaviour
     //     _mainCamera.SetActive(!value);
     // }
 
-    private void SetAimAnimation(bool value) => _animator.SetBool("IsAim", value);
+    private void SetAimAnimation(bool value)
+    {
+        if (!_aimImage.enabled) _aimImage.enabled = true;
+        _animator.SetBool("IsAim", value);
+        _aimAnimator.SetBool("IsAim", value);
+    }
     private void SetMoveAnimation(bool value) => _animator.SetBool("IsMove", value);
     private void SetAttackAnimation(bool value) => _animator.SetBool("IsAttack", value);
 
