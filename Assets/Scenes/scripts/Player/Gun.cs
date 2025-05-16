@@ -37,23 +37,13 @@ public class Gun : MonoBehaviour
         _currentCount = _shootDelay;
 
         // TODO : Ray 발사 -> 반환받은 대상에게 데미지 부여하는 기능. 몬스터 구현 시 같이 구현
-        GameObject target = RayShoot();
+        IDamagable target = RayShoot();
         if(target == null) return true;
 
-        Debug.Log($"총에 맞음 : {target.name}");
+        target.TakeDamage(_shootDamage);
+
+        // Debug.Log($"총에 맞음 : {target.name}");
         // ----
-
-
-
-
-
-
-
-
-
-
-
-
         return true;
     }
     private void HandleCanShoot()
@@ -61,17 +51,21 @@ public class Gun : MonoBehaviour
         if (_canShoot) return;
         _currentCount -= Time.deltaTime;
     }
-    private GameObject RayShoot()
+    private IDamagable RayShoot()
     {
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
         RaycastHit hit;
 
         if(Physics.Raycast(ray, out hit, _attackRange, _targetLayer))
         {
-            // ----
-            return hit.transform.gameObject;
+            // =====
+            
             // TODO : 몬스터를 어떻게 구현하는가에 따라 다르다.
             // IDamagable
+            return hit.transform.GetComponent<IDamagable>(); // 이거 우회하라고? GetComponent가 지속적으로 호출되는걸 방지하는 방법!
+            // =====
+
+
         }
         return null;
     }
