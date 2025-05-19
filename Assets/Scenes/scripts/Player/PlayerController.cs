@@ -2,12 +2,20 @@ using Cinemachine;
 using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 // 참조 생성용 임시 네임스페이스 참조
 // 작업물 병합 시 아래 내용 주석처리
 // using PlayerMovement = _Test.PlayerMovement;
 
+
 public class PlayerController : MonoBehaviour, IDamagable
 {
+    [SerializeField] private InputAction _testKey;
+    private void TestMethod(InputAction.CallbackContext ctx)
+    {
+        Debug.Log("Test입니다.");
+    }
+
     public bool IsControlActivate { get; set; } = true;
 
     private PlayerStatus _status;
@@ -25,6 +33,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     private Image _aimImage;
 
     [SerializeField] private HpGaugeUI _hpUI;
+
+    private InputAction _aimInputAction;
 
     private void Awake()
     {
@@ -57,28 +67,37 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         _hpUI.SetImageFillAmount(1);
         _status.CurrentHP.Value = _status.MaxHP;
+
+        _aimInputAction = GetComponent<PlayerInput>().actions["Aim"];
     }
     private void HandlePlayerControl()
     {
         if (!IsControlActivate) return;
 
         HandleMovement();
-        HandleAiming();
-        HandleShooting();
+        // HandleAiming();
+        // HandleShooting();
 
         // Test
-        if(Input.GetKey(KeyCode.Alpha1))
-        {
-            TakeDamage(1);
-        }
-        if (Input.GetKey(KeyCode.Alpha2))
-        {
-            RecoveryHP(1);
-        }
+        // if(Input.GetKey(KeyCode.Alpha1))
+        // {
+        //     TakeDamage(1);
+        // }
+        // if (Input.GetKey(KeyCode.Alpha2))
+        // {
+        //     RecoveryHP(1);
+        // }
     }
-    private void HandleShooting()
+    //private void HandleShooting()
+    public void OnShoot()
     {
-        if (_status.IsAiming.Value && Input.GetKey(_shootKey))
+        //if (_status.IsAiming.Value && Input.GetKey(_shootKey))
+
+        // _shootInputAction.WasPressedThisFrame() => 이번 프레임에 눌렀는가 (GetKeyDown)
+        // _shootInputAction.WasReleasedThisFrame() => 이번 프레임에 뗴어졌는가 (GetKeyUp)
+        // _shootInputAction.IsPressed() => 이번 프레임에 눌러져있는가 (GetKey)
+
+        if (_status.IsAiming.Value)
         {
             _status.IsAttacking.Value = _gun.Shoot();
         }
@@ -111,16 +130,28 @@ public class PlayerController : MonoBehaviour, IDamagable
         // Aim 상태일 때만
         if (_status.IsAiming.Value)
         {
-            Vector3 input = _movement.GetInputDirection();
-            _animator.SetFloat("X", input.x);
-            _animator.SetFloat("Z", input.z);
+            // Vector3 input = _movement.GetInputDirection();
+            // _animator.SetFloat("X", input.x);
+            // _animator.SetFloat("Z", input.z);
+
+            // 정면으로 바라보게
+            _animator.SetFloat("X", _movement.InputDirection.x);
+            _animator.SetFloat("Z", _movement.InputDirection.y);
         }
     }
 
-    private void HandleAiming()
+    private void HandleAiming(InputAction.CallbackContext ctx)
     {
-        _status.IsAiming.Value = Input.GetKey(_aimKey);
+        //_status.IsAiming.Value = Input.GetKey(_aimKey);
 
+        _status.IsAiming.Value = ctx.started;
+        // 누린 상태로 유지하고 싶다면?
+        // 1. Key Down 상태 => 키 입력이 시작된 시점인지 체크
+        // 2. Key Up 상태 => 키 입력이 시작된 시점인지 체크
+
+        // ctx.started => 키 입력이 시작됐는지 판별
+        // ctx.performed => 키 입력이 진행중인지 판별
+        // ctx.canceled => 키 입력이 떼어졌는지 판별
     }
     public void TakeDamage(int value)
     {
@@ -152,6 +183,15 @@ public class PlayerController : MonoBehaviour, IDamagable
         _status.IsMoving.Subscribe(SetMoveAnimation);
         _status.IsAttacking.Subscribe(SetAttackAnimation);
         _status.CurrentHP.Subscribe(SetHpUIGauge);
+
+        // inputs ----
+        _aimInputAction.Enable();
+        _aimInputAction.started += HandleAiming;
+        _aimInputAction.canceled += HandleAiming;
+
+        // Test ----
+        _testKey.Enable();
+        _testKey.started += TestMethod;
     }
 
     public void UnsubscribeEvents()
@@ -162,6 +202,11 @@ public class PlayerController : MonoBehaviour, IDamagable
         _status.IsMoving.Unsubscribe(SetMoveAnimation);
         _status.IsAttacking.Unsubscribe(SetAttackAnimation);
         _status.CurrentHP.Unsubscribe(SetHpUIGauge);
+
+        // inputs ----
+        _aimInputAction.Disable();
+        _aimInputAction.started -= HandleAiming;
+        _aimInputAction.canceled -= HandleAiming;
     }
 
     // private void SetActivateAimCamera(bool value)
