@@ -190,8 +190,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         _aimInputAction.canceled += HandleAiming;
 
         // Test ----
-        _testKey.Enable();
-        _testKey.started += TestMethod;
+        // _testKey.Enable();
+        // _testKey.started += TestMethod;
     }
 
     public void UnsubscribeEvents()
