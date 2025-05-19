@@ -10,11 +10,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, IDamagable
 {
-    [SerializeField] private InputAction _testKey;
-    private void TestMethod(InputAction.CallbackContext ctx)
-    {
-        Debug.Log("Test입니다.");
-    }
+    // [SerializeField] private InputAction _testKey;
+    // private void TestMethod(InputAction.CallbackContext ctx)
+    // {
+    //     Debug.Log("Test입니다.");
+    // }
 
     public bool IsControlActivate { get; set; } = true;
 

@@ -1,5 +1,6 @@
 using Cinemachine;
 using UnityEngine;
+using UnityEngineInternal;
 
 public class Gun : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private int _shootDamage;
     [SerializeField] private float _shootDelay;
     [SerializeField] private AudioClip _shootSFX;
+    [SerializeField] private GameObject _fireParticle;
 
     private CinemachineImpulseSource _impulse;
     private Camera _camera;
@@ -34,7 +36,11 @@ public class Gun : MonoBehaviour
         _currentCount = _shootDelay;
 
         // TODO : Ray 발사 -> 반환받은 대상에게 데미지 부여하는 기능. 몬스터 구현 시 같이 구현
-        IDamagable target = RayShoot();
+        RaycastHit hit;
+        IDamagable target = RayShoot(out hit);
+
+        if (!hit.Equals(default)) PlayerFireEffect(hit.point, Quaternion.LookRotation(hit.normal));
+
         if (target == null) return true;
 
         target.TakeDamage(_shootDamage);
@@ -48,7 +54,7 @@ public class Gun : MonoBehaviour
         if (_canShoot) return;
         _currentCount -= Time.deltaTime;
     }
-    private IDamagable RayShoot()
+    private IDamagable RayShoot(out RaycastHit hitTarget)
     {
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
         RaycastHit hit;
@@ -58,13 +64,21 @@ public class Gun : MonoBehaviour
             // TODO : 몬스터를 어떻게 구현하는가에 따라 다르다.
             // IDamagable
             // return hit.transform.GetComponent<IDamagable>(); // 이거 우회하라고? GetComponent가 지속적으로 호출되는걸 방지하는 방법!
+            hitTarget = hit;
+            if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
 
             return ReferenceRegistry.GetProvider(hit.collider.gameObject).
                 GetAs<NormalMonster>() as IDamagable;
+            }
         }
+        hitTarget = default;
         return null;
     }
-
+    private void PlayerFireEffect(Vector3 position, Quaternion rotation)
+    {
+        Instantiate(_fireParticle, position, rotation);
+    }
     private void PlayShootSound()
     {
         SFXController sfx = GameManager.Instance.Audio.GetSFX();
